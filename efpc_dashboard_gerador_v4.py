@@ -116,20 +116,20 @@ def _resolver_ou_none(func, *args):
 
 ARQUIVOS = {
     "consolidado":   _resolver_ou_none(_arquivo_mais_recente_por_prefixo,
-                         os.path.join(BASE, r"Dados Tratados\Balancetes Consolidado Tratados"),
+                         os.path.join(BASE, "Dados Tratados", "Balancetes Consolidado Tratados"),
                          "BALANCETES CONSOLIDADOS"),
     "pga":           _resolver_ou_none(_arquivo_mais_recente_por_prefixo,
-                         os.path.join(BASE, r"Dados Tratados\Balancetes PGAs Tratados"),
+                         os.path.join(BASE, "Dados Tratados", "Balancetes PGAs Tratados"),
                          "BALANCETES PGA"),
-    "tiers":         os.path.join(BASE, r"Dados Manuais\Tiers.xlsx"),
-    "classificacao": os.path.join(BASE, r"Dados Manuais\Classificação de Dados no Balancete.xlsx"),
-    "dsi":           _arquivo_mais_recente_dsi(os.path.join(BASE, r"Dados Participantes\Sexo e Idade dos participantes")),
-    "dirigentes":    os.path.join(BASE, r"Dados Cadastrais\Cadastro Dirigentes.csv"),
-    "cad_efpc":      os.path.join(BASE, r"Dados Cadastrais\Cadastro EFPC.csv"),
+    "tiers":         os.path.join(BASE, "Dados Manuais", "Tiers.xlsx"),
+    "classificacao": os.path.join(BASE, "Dados Manuais", "Classificação de Dados no Balancete.xlsx"),
+    "dsi":           _arquivo_mais_recente_dsi(os.path.join(BASE, "Dados Participantes", "Sexo e Idade dos participantes")),
+    "dirigentes":    os.path.join(BASE, "Dados Cadastrais", "Cadastro Dirigentes.csv"),
+    "cad_efpc":      os.path.join(BASE, "Dados Cadastrais", "Cadastro EFPC.csv"),
     "planos":        _resolver_ou_none(_arquivo_mais_recente_por_prefixo,
-                         os.path.join(BASE, r"Dados Tratados\Balancetes Planos Tratados"),
+                         os.path.join(BASE, "Dados Tratados", "Balancetes Planos Tratados"),
                          "BALANCETES PLANOS"),
-    "cad_planos":    os.path.join(BASE, r"Dados Cadastrais\Cadastro Planos.csv"),
+    "cad_planos":    os.path.join(BASE, "Dados Cadastrais", "Cadastro Planos.csv"),
 }
 
 # Pasta com a série histórica de investimentos (Demonstrativo de Investimentos
@@ -140,7 +140,7 @@ PASTA_FUNDOS_EXCLUSIVOS = os.path.join(BASE, "Fundos Exclusivos")
 # arquivo separado — EPB_1SEMESTRE_AAAA / EPB_2SEMESTRE_AAAA, em .xlsx ou .csv (sem
 # cabeçalho, ";", UTF-8 com BOM) — que carregar_epb_serie() concatena e recorta para
 # uma janela móvel dos últimos N anos.
-PASTA_EPB = os.path.join(BASE, r"Dados Participantes\Situação do Participante")
+PASTA_EPB = os.path.join(BASE, "Dados Participantes", "Situação do Participante")
 
 # ─────────────────────────────────────────────────────────────────
 # ROTEADOR DE "Dados Extração" — qualquer arquivo solto na raiz (fora das 3 subpastas
@@ -183,7 +183,7 @@ def _regras_roteamento_extracao():
         (lambda n: "classifica" in n,
          os.path.join(BASE, "Dados Manuais"), "Classificação de Dados no Balancete.xlsx"),
         (lambda n: "dsi" in n,
-         os.path.join(BASE, r"Dados Participantes\Sexo e Idade dos participantes"), None),
+         os.path.join(BASE, "Dados Participantes", "Sexo e Idade dos participantes"), None),
         (lambda n: "epb" in n and "semestre" in n,
          PASTA_EPB, None),
         (lambda n: re.search(r"20\d{2}[-_]?(0[1-9]|1[0-2])(?!\d)", n) is not None,
@@ -2398,7 +2398,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeFicha();});
 if __name__ == "__main__":
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     rotear_dados_extracao(BASE)
-    ARQUIVOS["dsi"] = _arquivo_mais_recente_dsi(os.path.join(BASE, r"Dados Participantes\Sexo e Idade dos participantes"))
+    ARQUIVOS["dsi"] = _arquivo_mais_recente_dsi(os.path.join(BASE, "Dados Participantes", "Sexo e Idade dos participantes"))
     bases_tratadas = gerar_bases_tratadas(BASE)
     ARQUIVOS["consolidado"] = bases_tratadas["consolidado"]
     ARQUIVOS["pga"]         = bases_tratadas["pga"]
