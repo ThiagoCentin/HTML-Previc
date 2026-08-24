@@ -4,7 +4,7 @@ EFPC Intelligence Dashboard v2 — Design System Quando
 Lê planilhas Previc + cadastros e gera HTML interativo.
 
 Dependências:  pip install pandas openpyxl
-Uso:           python efpc_dashboard_gerador_v2.py
+Uso:           python efpc_dashboard_gerador_v4.py
 """
 
 import glob
