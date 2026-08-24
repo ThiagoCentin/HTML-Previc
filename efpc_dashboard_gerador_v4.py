@@ -4,7 +4,7 @@ EFPC Intelligence Dashboard v2 — Design System Quando
 Lê planilhas Previc + cadastros e gera HTML interativo.
 
 Dependências:  pip install pandas openpyxl
-Uso:           python efpc_dashboard_gerador_v4.py
+Uso:           python efpc_dashboard_gerador_v2.py
 """
 
 import glob
@@ -241,7 +241,7 @@ def rotear_dados_extracao(base_dir):
         print("  (nada novo pra rotear)")
     print()
 
-OUTPUT_DIR  = os.path.join(BASE, "Dashboard")
+OUTPUT_DIR  = BASE
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "dashboard_data.json")
 
 HOJE = pd.Timestamp(datetime.now().date())
