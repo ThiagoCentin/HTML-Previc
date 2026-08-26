@@ -296,6 +296,13 @@ def carregar_epb_serie(pasta, anos=3):
         keep="last")
     return df.reset_index(drop=True)
 
+# Ordem de colunas do DSI quando exportado em .csv — mesma ordem do .xlsx, mas sem
+# cabeçalho (igual ao padrão já visto nos arquivos EPB, ver EPB_COLS_CORE acima) e com
+# BOM UTF-8 em vez de latin1.
+DSI_COLS = ["DT_COMPETENCIA", "NU_MATRICULA_EFPC", "SG_EFPC", "ID_PLANO", "CNPB",
+            "ID_BENEFICIO", "NU_BENEFICIO", "NM_BENEFICIO", "CS_SEXO",
+            "NM_FAIXA_ETARIA", "QT_PESSOAS"]
+
 # ─────────────────────────────────────────────────────────────────
 def carregar():
     print("Carregando arquivos...")
@@ -303,7 +310,10 @@ def carregar():
     d = {}
     for k, p in ARQUIVOS.items():
         print(f"  → {k}")
-        if p.lower().endswith(".csv"):
+        if k == "dsi" and p.lower().endswith(".csv"):
+            d[k] = pd.read_csv(p, sep=";", encoding="utf-8-sig", header=None, low_memory=False)
+            d[k].columns = DSI_COLS
+        elif p.lower().endswith(".csv"):
             d[k] = pd.read_csv(p, sep=";", encoding="latin1", low_memory=False)
         else:
             d[k] = pd.read_excel(p)
