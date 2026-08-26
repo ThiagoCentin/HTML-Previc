@@ -883,8 +883,8 @@ function msClear(page){
 // por eles (MSPL), independente da EFPC estar marcada ou não.
 const MSPL={part:new Set()};
 const MSPL_FN={part:'rPart'};
-const PLANO_BY_CNPB=new Map(RAW.planos.map(p=>[p.NU_CNPB,p]));
-const EFPC_COM_PLANOS=new Set(RAW.planos.map(p=>p.NU_MATRICULA_EFPC));
+let PLANO_BY_CNPB=new Map();
+let EFPC_COM_PLANOS=new Set();
 let partExpand=new Set();
 function mspToggleExpand(mat){
   if(partExpand.has(mat))partExpand.delete(mat);else partExpand.add(mat);
@@ -1668,11 +1668,16 @@ function rManuais(){manRender();}
 async function iniciarDashboard(){
   Chart.defaults.font.family='Inter';
   await carregarDados();
+  PLANO_BY_CNPB=new Map(RAW.planos.map(p=>[p.NU_CNPB,p]));
+  EFPC_COM_PLANOS=new Set(RAW.planos.map(p=>p.NU_MATRICULA_EFPC));
   document.getElementById('sb-sub').textContent='Quando · Previc '+compTxt((RAW.meta_atualizacao||{}).balancete_mes,(RAW.meta_atualizacao||{}).balancete_ano);
   document.getElementById('pg-updated').textContent=pgUpdatedTxt('overview');
   popSel();refresh();
 }
-iniciarDashboard();
+iniciarDashboard().catch(err=>{
+  console.error(err);
+  document.body.innerHTML='<div style="padding:40px;font:14px sans-serif;color:#B33E3E">Erro ao carregar o dashboard: '+err.message+'</div>';
+});
 // Fase de captura (3º arg `true`): precisa rodar ANTES do onclick da checkbox marcada
 // dentro do dropdown, porque msToggle() reconstrói o innerHTML da .ac-list (para refletir
 // o novo estado marcado) e isso desconecta o <input> clicado do DOM. Se este listener
