@@ -151,7 +151,7 @@ PASTA_EPB = os.path.join(BASE, "Dados Participantes", "Situação do Participant
 # são séries datadas: uma competência nova só entra (nada pra arquivar); uma competência
 # repetida (reenvio/correção) substitui e arquiva a antiga do mesmo jeito.
 # ─────────────────────────────────────────────────────────────────
-PASTA_ARQUIVO_MORTO = os.path.join(BASE, "arquivo_morto")
+PASTA_ARQUIVO_MORTO = os.path.join(BASE, "Arquivo_Morto")
 SUBPASTAS_BALANCETES = {"Balancetes Consolidados", "Balancetes PGA", "Balancetes de Planos"}
 
 

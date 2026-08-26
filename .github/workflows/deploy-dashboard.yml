@@ -41,12 +41,27 @@ jobs:
 
       - name: Rodar gerador e exportar dashboard_data.json
         run: |
+          set -x
           python efpc_dashboard_gerador_v4.py
+          echo "--- verificando se dashboard_data.json foi realmente escrito ---"
+          ls -la dashboard_data.json
+          test -s dashboard_data.json || (echo "::error::dashboard_data.json não existe ou está vazio após rodar o gerador" && exit 1)
 
       - name: Commitar resultado (JSON + pastas organizadas/arquivadas)
         run: |
+          set -x
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "--- branch atual ---"
+          git branch --show-current
+          echo "--- status antes do add ---"
+          git status
           git add -A
-          git diff --staged --quiet || git commit -m "Atualiza dashboard_data.json [automático]"
-          git push
+          echo "--- status depois do add ---"
+          git status
+          if git diff --staged --quiet; then
+            echo "Nada para commitar (git não detectou mudanças em relação ao HEAD)."
+          else
+            git commit -m "Atualiza dashboard_data.json [automático]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

@@ -129,7 +129,7 @@ def _mover_para_arquivo_morto(caminho, base_dir):
     base_dir, carimbado com data/hora) -- nunca apaga um arquivo em silêncio, só tira
     ele do caminho de quem já foi processado."""
     rel = os.path.relpath(os.path.dirname(caminho), base_dir)
-    pasta_morto = os.path.join(base_dir, "arquivo_morto", rel)
+    pasta_morto = os.path.join(base_dir, "Arquivo_Morto", rel)
     os.makedirs(pasta_morto, exist_ok=True)
     stem, ext = os.path.splitext(os.path.basename(caminho))
     carimbo = datetime.now().strftime("%Y%m%d-%H%M%S")
