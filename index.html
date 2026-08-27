@@ -949,18 +949,31 @@ function partClearSel(){
   rPart();
 }
 function tierTag(t){const c=TC[t]||'#B3B3B3';return`<span class="tag" style="background:${c}1A;color:${c==='#B3B3B3'||c==='#E0E0E0'?'#5F5F5F':c};border:1px solid ${c}55">${t||'N/D'}</span>`;}
+function fmtCNPJ(v){
+  if(!v)return '—';
+  const d=String(v).replace(/\D/g,'');
+  if(d.length!==14)return v;
+  return `${d.slice(0,2)}.${d.slice(2,5)}.${d.slice(5,8)}/${d.slice(8,12)}-${d.slice(12,14)}`;
+}
+function fmtFone(v){
+  if(!v)return '';
+  const d=String(v).replace(/\D/g,'');
+  if(d.length===11)return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7,11)}`;
+  if(d.length===10)return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6,10)}`;
+  return v;
+}
 function contatoHtml(d){
   const parts=[];
   if(d.SITE)parts.push(`<a href="${/^https?:\/\//i.test(d.SITE)?d.SITE:'http://'+d.SITE}" target="_blank" rel="noopener" title="${d.SITE}" style="color:var(--teal-600);text-decoration:none">🌐</a>`);
   if(d.EMAIL)parts.push(`<a href="mailto:${d.EMAIL}" title="${d.EMAIL}" style="color:var(--teal-600);text-decoration:none">✉</a>`);
-  if(d.FONE)parts.push(`<span title="${d.FONE}" style="color:var(--g600)">☎</span>`);
+  if(d.FONE)parts.push(`<span title="${fmtFone(d.FONE)}" style="color:var(--g600)">☎</span>`);
   return parts.length?parts.join(' '):'<span style="color:var(--g400)">—</span>';
 }
 function contatoFullHtml(d){
   const parts=[];
   if(d.SITE)parts.push(`🌐 <a href="${/^https?:\/\//i.test(d.SITE)?d.SITE:'http://'+d.SITE}" target="_blank" rel="noopener" style="color:var(--teal-600)">${d.SITE}</a>`);
   if(d.EMAIL)parts.push(`✉ <a href="mailto:${d.EMAIL}" style="color:var(--teal-600)">${d.EMAIL}</a>`);
-  if(d.FONE)parts.push(`☎ ${d.FONE}`);
+  if(d.FONE)parts.push(`☎ ${fmtFone(d.FONE)}`);
   return parts.length?parts.join('<br>'):'<span style="color:var(--g500);font-style:italic">Sem dados de contato cadastrados</span>';
 }
 // ── FICHA EFPC (MODAL) ──
@@ -1123,7 +1136,7 @@ function rRanking(){
   <td class="num" style="color:#B3B3B3">${i+1}</td>
   <td class="ef-open" style="font-weight:600" onclick="openFicha(${d.NU_MATRICULA_EFPC})">${d.SG_EFPC}</td>
   <td style="max-width:190px;overflow:hidden;text-overflow:ellipsis">${(d.NM_RAZAO_SOCIAL||'').substring(0,38)}</td>
-  <td style="font-size:11.5px;color:var(--g600)">${d.CNPJ||'—'}</td>
+  <td style="font-size:11.5px;color:var(--g600)">${fmtCNPJ(d.CNPJ)}</td>
   <td>${tierTag(d['Tier F3'])}</td>
   <td class="num">${d.TIER_QUANDO==='N/D'?'—':d.TIER_QUANDO}</td>
   <td style="color:${d['BPO(S/N)']==='S'?'var(--success)':'#B3B3B3'};font-weight:600">${d['BPO(S/N)']}</td>
