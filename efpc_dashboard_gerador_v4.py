@@ -184,7 +184,7 @@ def _regras_roteamento_extracao():
          os.path.join(BASE, "Dados Manuais"), "Classificação de Dados no Balancete.xlsx"),
         (lambda n: "dsi" in n,
          os.path.join(BASE, "Dados Participantes", "Sexo e Idade dos participantes"), None),
-        (lambda n: "epb" in n and "semestre" in n,
+        (lambda n: "epb" in n,
          PASTA_EPB, None),
         (lambda n: re.search(r"20\d{2}[-_]?(0[1-9]|1[0-2])(?!\d)", n) is not None,
          PASTA_FUNDOS_EXCLUSIVOS, None),

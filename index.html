@@ -315,7 +315,7 @@ tbody tr:last-child td{border-bottom:none}
         <th class="num" data-key="DESP_TOTAL" data-label="Despesas" onclick="setRank('DESP_TOTAL',this)">Despesas</th>
         <th class="num" data-key="DESP_PCT_PL" data-label="Desp%PL" onclick="setRank('DESP_PCT_PL',this)">Desp%PL</th>
         <th class="num" data-key="QT_ATIVOS" data-label="Ativos" onclick="setRank('QT_ATIVOS',this)">Ativos</th>
-        <th class="num" data-key="RAZAO_MATURIDADE" data-label="Maturidade" onclick="setRank('RAZAO_MATURIDADE',this)">Maturidade</th>
+        <th class="num" data-key="QT_ASSISTIDOS" data-label="Assistidos" onclick="setRank('QT_ASSISTIDOS',this)">Assistidos</th>
         <th class="num" data-key="QT_PLANOS" data-label="Planos" onclick="setRank('QT_PLANOS',this)">Planos</th>
         <th style="cursor:default">Contato</th>
       </tr></thead><tbody id="rank-body"></tbody></table></div>
@@ -1132,7 +1132,7 @@ function rRanking(){
   <td class="num ${d.DESP_TOTAL>0?'pos':d.DESP_TOTAL<0?'neg':'neu'}">${fmt.brl(Math.abs(d.DESP_TOTAL))}</td>
   <td class="num ${d.DESP_PCT_PL>15?'neg':d.DESP_PCT_PL<5?'pos':'neu'}">${d.DESP_PCT_PL.toFixed(2)}%</td>
   <td class="num">${fmt.num(d.QT_ATIVOS)}</td>
-  <td class="num ${d.RAZAO_MATURIDADE>1.5?'neg':''}">${d.RAZAO_MATURIDADE.toFixed(2)}</td>
+  <td class="num">${fmt.num(d.QT_ASSISTIDOS)}</td>
   <td class="num">${fmt.num(d.QT_PLANOS||0)}<br><span style="font-size:9.5px;color:var(--g500)">${d.TIPOS_PLANOS||'—'}</span></td>
   <td>${contatoHtml(d)}</td></tr>`).join('');
 }
@@ -1296,12 +1296,10 @@ function rPart(){
     tA=rows.reduce((s,d)=>s+d.QT_ATIVOS,0);
     tAs=rows.reduce((s,d)=>s+d.QT_ASSISTIDOS,0);
   }
-  const r=tA>0?tAs/tA:0;
   document.getElementById('kpi-part').innerHTML=`
   <div class="kpi navy"><div class="kpi-l">Total de Participantes</div><div class="kpi-v">${fmt.num(tA+tAs)}</div></div>
   <div class="kpi teal"><div class="kpi-l">Ativos</div><div class="kpi-v">${fmt.num(tA)}</div></div>
   <div class="kpi green"><div class="kpi-l">Assistidos</div><div class="kpi-v">${fmt.num(tAs)}</div></div>
-  <div class="kpi ${r>1.5?'red':r>1?'orange':'green'}"><div class="kpi-l">Maturidade</div><div class="kpi-v">${r.toFixed(2)}</div><div class="kpi-s">${r>1.5?'fundo maduro':r>1?'atenção':'saudável'}</div></div>
   ${planoMode?`<div class="kpi navy"><div class="kpi-l">Planos no Filtro</div><div class="kpi-v">${fmt.num(planosPool.length)}</div></div>`:''}`;
   const fx=['ATÉ 24 ANOS','ENTRE 25 E 34 ANOS','ENTRE 35 E 54 ANOS','ENTRE 55 E 64 ANOS','ENTRE 65 E 74 ANOS','ENTRE 75 E 84 ANOS','MAIOR QUE 85 ANOS'];
   const fd=Object.entries(RAW.faixa_etaria.reduce((a,d)=>{if(mats.has(String(d.NU_MATRICULA_EFPC)))a[d.NM_FAIXA_ETARIA]=(a[d.NM_FAIXA_ETARIA]||0)+d.QT_PESSOAS;return a;},{})).map(([k,v])=>({NM_FAIXA_ETARIA:k,QT_PESSOAS:v}));
@@ -1478,7 +1476,7 @@ function rPlanos(){
 const EXPORT_COLS={
   ranking:[['SG_EFPC','EFPC'],['NM_RAZAO_SOCIAL','Razão Social'],['CNPJ','CNPJ'],['Tier F3','Tier F3'],['TIER_QUANDO','Marina'],
     ['BPO(S/N)','BPO'],['Prestador','Prestador'],['Sistema','Sistema'],['PL_valor','PL'],['DESP_TOTAL','Despesas'],
-    ['DESP_PCT_PL','Desp % PL'],['QT_ATIVOS','Ativos'],['QT_ASSISTIDOS','Assistidos'],['RAZAO_MATURIDADE','Maturidade'],
+    ['DESP_PCT_PL','Desp % PL'],['QT_ATIVOS','Ativos'],['QT_ASSISTIDOS','Assistidos'],
     ['QT_PLANOS','Qtd. Planos'],['TIPOS_PLANOS','Tipos de Planos'],['SITE','Site'],['EMAIL','E-mail'],['FONE','Telefone']],
   planos:[['SG_PLANO','Sigla Plano'],['NM_PLANO','Plano'],['CNPJ','CNPJ'],['SG_EFPC','EFPC'],['NM_RAZAO_SOCIAL','Razão Social EFPC'],
     ['MODALIDADE','Modalidade'],['TIPO_PATROCINIO','Patrocínio'],['SITUACAO','Situação'],['PL_valor','PL'],['QT_ATIVOS','Ativos'],
